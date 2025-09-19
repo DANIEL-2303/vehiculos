@@ -10,7 +10,7 @@ public class Vehiculo {
     private String propietario;
 
     /**
-     * Constructor vacío (requerido por JavaBeans)
+     * Constructor vacío
      */
     public Vehiculo() {
     }

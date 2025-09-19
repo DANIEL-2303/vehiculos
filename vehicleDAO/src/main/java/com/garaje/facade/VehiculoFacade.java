@@ -10,8 +10,8 @@ package com.garaje.facade;
  */
 import com.garaje.model.Vehiculo;
 import com.garaje.persistence.VehiculoDAO;
-import javax.annotation.Resource;
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
+import jakarta.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,8 +28,10 @@ public class VehiculoFacade {
     private DataSource ds;
 
     /**
-     * Lista todos los vehículos. Debe documentar excepciones si se agregan
-     * reglas.
+     * Lista todos los vehículos.Debe documentar excepciones si se agregan
+ reglas.
+     * @return 
+     * @throws java.sql.SQLException
      */
     public List<Vehiculo> listar() throws SQLException {
         try (Connection con = ds.getConnection()) {
@@ -39,7 +41,10 @@ public class VehiculoFacade {
     }
 
     /**
-     * Busca vehículo por id. Manejar errores en llamada.
+     * Busca vehículo por id.Manejar errores en llamada.
+     * @param id
+     * @return 
+     * @throws java.sql.SQLException
      */
     public Vehiculo buscarPorId(int id) throws SQLException {
         try (Connection con = ds.getConnection()) {
@@ -49,9 +54,11 @@ public class VehiculoFacade {
     }
 
     /**
-     * Agrega vehículo. Debe validar con reglas de negocio antes de agregar. Por
-     * ejemplo, no agregar si la placa ya existe, si propietario está vacío,
-     * etc.
+     * Agrega vehículo.Debe validar con reglas de negocio antes de agregar.Por
+ ejemplo, no agregar si la placa ya existe, si propietario está vacío,
+ etc.
+     * @param v
+     * @throws java.sql.SQLException
      */
     public void agregar(Vehiculo v) throws SQLException {
         try (Connection con = ds.getConnection()) {

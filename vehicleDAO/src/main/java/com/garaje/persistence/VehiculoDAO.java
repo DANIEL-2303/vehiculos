@@ -52,6 +52,9 @@ public class VehiculoDAO {
 
     /**
      * Busca un vehículo por ID.
+     * @param id
+     * @return 
+     * @throws java.sql.SQLException
      */
     public Vehiculo buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM vehiculos WHERE id=?";
@@ -77,10 +80,11 @@ public class VehiculoDAO {
     }
 
     /**
-     * Verifica si ya existe una placa registrada. Útil para reglas de negocio.
+     * Verifica si ya existe una placa registrada.Útil para reglas de negocio.
      *
      * @param placa placa a buscar
      * @return true si existe, false si no
+     * @throws java.sql.SQLException
      */
     public boolean existePlaca(String placa) throws SQLException {
         String sql = "SELECT COUNT(*) FROM vehiculos WHERE placa=?";
@@ -99,14 +103,13 @@ public class VehiculoDAO {
     }
 
     /**
-     * Agrega un nuevo vehículo si la placa no existe. Lanzar SQLException si
-     * falla.
+     * Agrega un nuevo vehículo si la placa no existe.Lanzar SQLException si
+ falla.
+     * @param v
+     * @throws java.sql.SQLException
      */
     public void agregar(Vehiculo v) throws SQLException {
-        String sql = "INSERT INTO vehiculos (placa, marca, modelo, color, 
-propietario
-        ) VALUES( ?,  ?,  ?,  ?,  ?)
-        "; 
+        String sql = "INSERT INTO vehiculos (placa, marca, modelo, color, propietario) VALUES( ?,  ?,  ?,  ?,  ?)"; 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, v.getPlaca());
             ps.setString(2, v.getMarca());
@@ -123,12 +126,12 @@ propietario
 
     /**
      * Actualiza todos los datos de un vehículo existente por id.
+     * @param v
+     * @throws java.sql.SQLException
      */
+    
     public void actualizar(Vehiculo v) throws SQLException {
-        String sql = "UPDATE vehiculos SET placa=?, marca=?, modelo=?, 
-color =  ?
-        , propietario =  ? WHERE  id =  ?
-        "; 
+        String sql = "UPDATE vehiculos SET placa=?, marca=?, modelo=?, color =  ? , propietario =  ? WHERE  id =  ?"; 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, v.getPlaca());
             ps.setString(2, v.getMarca());
@@ -146,6 +149,7 @@ color =  ?
 
     /**
      * Borra un vehículo por id.
+     * @param id
      */
     public void eliminar(int id) throws SQLException {
         String sql = "DELETE FROM vehiculos WHERE id=?";
