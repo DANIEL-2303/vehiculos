@@ -150,6 +150,7 @@ public class VehiculoDAO {
     /**
      * Borra un vehículo por id.
      * @param id
+     * @throws java.sql.SQLException
      */
     public void eliminar(int id) throws SQLException {
         String sql = "DELETE FROM vehiculos WHERE id=?";

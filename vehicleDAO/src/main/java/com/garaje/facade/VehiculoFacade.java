@@ -60,9 +60,22 @@ public class VehiculoFacade {
      * @param v
      * @throws java.sql.SQLException
      */
-    public void agregar(Vehiculo v) throws SQLException {
+    public void agregar(Vehiculo v) throws SQLException, Exception {
+        
         try (Connection con = ds.getConnection()) {
             VehiculoDAO dao = new VehiculoDAO(con);
+            
+            if(dao.existePlaca(v.getPlaca())){
+                throw new Exception("no puede haber placa duplicada");
+            }
+            if(v.getPropietario() == null || v.getPropietario().length() < 5){
+                throw new Exception("la casilla de propetario debe tener mas de 5 caracteres"
+                + " o no pude estar basia"); 
+            }
+            if(v.getMarca().length()<3 && v.getModelo().length()<3 && v.getPlaca().length()<3){
+                throw new Exception("las casillas color, modelo y placa deben tner minimo 3 caracteres ");
+            }
+            
             dao.agregar(v);
         }
     }
@@ -73,6 +86,7 @@ public class VehiculoFacade {
      * @throws java.sql.SQLException
      */
     public void actualizar(Vehiculo v) throws SQLException {
+        
         try (Connection con = ds.getConnection()) {
             VehiculoDAO dao = new VehiculoDAO(con);
             dao.actualizar(v);
