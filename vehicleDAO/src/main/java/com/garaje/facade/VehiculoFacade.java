@@ -79,7 +79,7 @@ public class VehiculoFacade {
             dao.agregar(v);
         }
     }
-
+//ddadda
     /**
      * Actualiza vehículo; incluir reglas de negocio.
      * @param v
@@ -105,3 +105,4 @@ public class VehiculoFacade {
         }
     }
 }
+
