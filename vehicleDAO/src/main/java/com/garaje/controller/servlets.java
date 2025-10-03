@@ -11,171 +11,119 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Controlador web para la gestión de vehículos.
- * Recibe peticiones HTTP y las traduce en operaciones CRUD.
- * Maneja errores y muestra mensajes amigables al usuario.
- */
 @WebServlet("/vehiculos")
 public class servlets extends HttpServlet {
-    
+
     @EJB
     private VehiculoFacade facade;
-    
-    /**
-     * Maneja peticiones GET para listar vehículos.
-     * @param request
-     * @param response
-     */
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String accion = request.getParameter("accion");
-        
+
+        String action = request.getParameter("action");
+
         try {
-            if (accion == null || accion.equals("listar")) {
+            if (action == null || action.equals("listar")) {
                 listarVehiculos(request, response);
-            } else if (accion.equals("eliminar")) {
+            } else if (action.equals("eliminar")) {
                 eliminarVehiculo(request, response);
-            } else if (accion.equals("editar")) {
-                mostrarFormularioEditar(request, response);
             }
         } catch (Exception e) {
-            manejarError(request, response, e.getMessage());
+            manejarError(request, response, "Error al cargar los vehículos", e);
         }
     }
-    
-    /**
-     * Maneja peticiones POST para agregar o actualizar vehículos.
-     * @param request
-     * @param response
-     */
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String accion = request.getParameter("accion");
-        
+
+        String action = request.getParameter("action");
+
         try {
-            if (accion == null || accion.equals("agregar")) {
+            if (action != null && action.equals("agregar")) {
                 agregarVehiculo(request, response);
-            } else if (accion.equals("actualizar")) {
+            } else if (action != null && action.equals("actualizar")) {
                 actualizarVehiculo(request, response);
             }
         } catch (Exception e) {
-            manejarError(request, response, e.getMessage());
+            manejarError(request, response, "Error en la operación", e);
         }
     }
-    
-    /**
-     * Lista todos los vehículos y los envía a la vista.
-     */
-    private void listarVehiculos(HttpServletRequest request, HttpServletResponse response) 
+
+    private void listarVehiculos(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        List<Vehiculo> vehiculos = facade.listar();
+        List<Vehiculo> vehiculos = facade.listar();  // USA listar() no findAll()
         request.setAttribute("vehiculos", vehiculos);
-        request.getRequestDispatcher("/vehiculos.jsp").forward(request, response);
+        request.getRequestDispatcher("vehiculos.jsp").forward(request, response);
     }
-    
-    /**
-     * Agrega un nuevo vehículo con los datos del formulario.
-     */
-    private void agregarVehiculo(HttpServletRequest request, HttpServletResponse response) 
+
+    private void agregarVehiculo(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        
-        // Obtener datos del formulario
+
         String placa = request.getParameter("placa");
         String marca = request.getParameter("marca");
         String modelo = request.getParameter("modelo");
         String color = request.getParameter("color");
         String propietario = request.getParameter("propietario");
-        
-        // Crear vehículo
-        Vehiculo v = new Vehiculo();
-        v.setPlaca(placa);
-        v.setMarca(marca);
-        v.setModelo(modelo);
-        v.setColor(color);
-        v.setPropietario(propietario);
-        
-        // Agregar vehículo (aquí se validan las reglas de negocio)
-        facade.agregar(v);
-        
-        // Mensaje de éxito
-        request.setAttribute("mensaje", "Vehículo agregado exitosamente");
-        listarVehiculos(request, response);
-    }
-    
-    /**
-     * Elimina un vehículo por su ID.
-     */
-    private void eliminarVehiculo(HttpServletRequest request, HttpServletResponse response) 
-            throws Exception {
-        
-        int id = Integer.parseInt(request.getParameter("id"));
-        facade.eliminar(id);
-        
-        request.setAttribute("mensaje", "Vehículo eliminado exitosamente");
-        listarVehiculos(request, response);
-    }
-    
-    /**
-     * Muestra el formulario de edición con los datos del vehículo.
-     */
-    private void mostrarFormularioEditar(HttpServletRequest request, HttpServletResponse response) 
-            throws Exception {
-        
-        int id = Integer.parseInt(request.getParameter("id"));
-        Vehiculo v = facade.buscarPorId(id);
-        
-        request.setAttribute("vehiculo", v);
-        request.getRequestDispatcher("/editar.jsp").forward(request, response);
-    }
-    
-    /**
-     * Actualiza un vehículo existente.
-     */
-    private void actualizarVehiculo(HttpServletRequest request, HttpServletResponse response) 
-            throws Exception {
-        
-        // Obtener datos del formulario
-        int id = Integer.parseInt(request.getParameter("id"));
-        String placa = request.getParameter("placa");
-        String marca = request.getParameter("marca");
-        String modelo = request.getParameter("modelo");
-        String color = request.getParameter("color");
-        String propietario = request.getParameter("propietario");
-        
-        // Crear vehículo con datos actualizados
-        Vehiculo v = new Vehiculo();
-        v.setId(id);
-        v.setPlaca(placa);
-        v.setMarca(marca);
-        v.setModelo(modelo);
-        v.setColor(color);
-        v.setPropietario(propietario);
-        
-        // Actualizar
-        facade.actualizar(v);
-        
-        request.setAttribute("mensaje", "Vehículo actualizado exitosamente");
-        listarVehiculos(request, response);
-    }
-    
-    /**
-     * Maneja errores y muestra mensajes amigables (sin stack traces).
-     */
-    private void manejarError(HttpServletRequest request, HttpServletResponse response, 
-            String mensajeError) throws ServletException, IOException {
-        
-        request.setAttribute("error", mensajeError);
-        
+
+        Vehiculo vehiculo = new Vehiculo();
+        vehiculo.setPlaca(placa);
+        vehiculo.setMarca(marca);
+        vehiculo.setModelo(modelo);
+        vehiculo.setColor(color);
+        vehiculo.setPropietario(propietario);
+
         try {
-            listarVehiculos(request, response);
+            facade.agregar(vehiculo);
+            response.sendRedirect("vehiculos");  // Redirige después de agregar
         } catch (Exception e) {
-            request.setAttribute("error", "Error al cargar los vehículos");
-            request.getRequestDispatcher("/vehiculos.jsp").forward(request, response);
+            // Si hay error, vuelve a mostrar el formulario con el mensaje
+            request.setAttribute("error", e.getMessage());
+            listarVehiculos(request, response);
         }
+    }
+
+    private void actualizarVehiculo(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        String placa = request.getParameter("placa");
+        String marca = request.getParameter("marca");
+        String modelo = request.getParameter("modelo");
+        String color = request.getParameter("color");
+        String propietario = request.getParameter("propietario");
+
+        Vehiculo vehiculo = new Vehiculo();
+        vehiculo.setId(id);
+        vehiculo.setPlaca(placa);
+        vehiculo.setMarca(marca);
+        vehiculo.setModelo(modelo);
+        vehiculo.setColor(color);
+        vehiculo.setPropietario(propietario);
+
+        facade.actualizar(vehiculo);
+        response.sendRedirect("vehiculos");
+    }
+
+    private void eliminarVehiculo(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        int id = Integer.parseInt(request.getParameter("id"));
+
+        try {
+            facade.eliminar(id);
+            response.sendRedirect("vehiculos");
+        } catch (Exception e) {
+            request.setAttribute("error", e.getMessage());
+            listarVehiculos(request, response);
+        }
+    }
+
+    private void manejarError(HttpServletRequest request, HttpServletResponse response,
+            String mensajeError, Exception e)
+            throws ServletException, IOException {
+        request.setAttribute("error", mensajeError + ": " + e.getMessage());
+        request.getRequestDispatcher("vehiculos.jsp").forward(request, response);
     }
 }
