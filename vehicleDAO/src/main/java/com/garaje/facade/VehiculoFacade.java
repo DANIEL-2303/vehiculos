@@ -75,6 +75,7 @@ public class VehiculoFacade {
             if(v.getMarca().length()<3 && v.getModelo().length()<3 && v.getPlaca().length()<3){
                 throw new Exception("las casillas color, modelo y placa deben tner minimo 3 caracteres ");
             }
+           
             
             dao.agregar(v);
         }
@@ -98,10 +99,21 @@ public class VehiculoFacade {
      * @param id
      * @throws java.sql.SQLException
      */
-    public void eliminar(int id) throws SQLException {
+    public void eliminar(int id) throws SQLException, Exception {
         try (Connection con = ds.getConnection()) {
             VehiculoDAO dao = new VehiculoDAO(con);
+            
+            Vehiculo v = dao.buscarPorId(id);
+            if (v == null) {
+                throw new Exception("El vehículo no existe");
+            }
+            
+            if (v.getPropietario().equalsIgnoreCase("Administrador")) {
+                throw new Exception("No se puede eliminar un vehículo del Administrador");
+            }
+            
             dao.eliminar(id);
         }
     }
+
 }
