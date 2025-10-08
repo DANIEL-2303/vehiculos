@@ -1,9 +1,8 @@
 <%-- 
     Document   : vehiculos
-    Created on : 1/10/2025, 10:29:10 p. m.
+    Created on : 1/10/2025, 10:29:10 p. m.
     Author     : danie
 --%>
-
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.garaje.model.Vehiculo"%>
 <%@page import="java.util.List"%>
@@ -28,6 +27,7 @@
         <!-- Formulario Agregar -->
         <h2>Agregar Vehículo</h2>
         <form action="vehiculos" method="post">
+            <input type="hidden" name="action" value="agregar">
             Placa: <input type="text" name="placa" /><br/>
             Marca: <input type="text" name="marca" /><br/>
             Modelo: <input type="text" name="modelo" /><br/>
@@ -64,8 +64,8 @@
                     <td>${vehiculo.color}</td>
                     <td>${vehiculo.propietario}</td>
                     <td>
-                        <a href="vehiculos?accion=editar&id=${vehiculo.id}">Editar</a> |
-                        <a href="vehiculos?accion=eliminar&id=${vehiculo.id}" 
+                        <a href="vehiculos?action=editar&id=${vehiculo.id}">Editar</a> |
+                        <a href="vehiculos?action=eliminar&id=${vehiculo.id}" 
                            onclick="return confirm('¿Eliminar este vehículo?')">Eliminar</a>
                     </td>
                 </tr>
