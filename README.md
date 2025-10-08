@@ -129,5 +129,5 @@ El proyecto se gestiona mediante Git siguiendo buenas prácticas:
 
 Estado final
 
-Todas las clases, validaciones, excepciones y controladores cumplen los requerimientos del taller “Taller Garaje Parte 2 – Persistencia, Fachadas y Controladores”.
+Todas las clases, validaciones, excepciones y controladores cumplen los requerimientos del taller “Taller Garaje – Persistencia, Fachadas y Controladores”.
 El sistema está completamente funcional y validado para entrega.
