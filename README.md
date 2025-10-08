@@ -24,10 +24,10 @@ El sistema está dividido en cuatro capas principales, organizadas en paquetes:
 
 | Paquete                  | Rol                        | Descripción                                                                                      |
 | -------------------------| -------------------------- | ------------------------------------------------------------------------------------------------ |
-| com.garaje.model**       | Modelo                     | Contiene las clases que representan las entidades de la base de datos. Ejemplo: `Vehiculo.java   |
-| com.garaje.persistence** | Persistencia (DAO)         | Encapsula las operaciones CRUD directas sobre la base de datos MySQL. Ejemplo: `VehiculoDAO.java |
-| com.garaje.facade**      | Lógica de negocio (Facade) | Aplica las reglas de negocio antes de interactuar con la capa DAO. Ejemplo: `VehiculoFacade.java |
-| com.garaje.controller**  | Controladores (Servlets)   | Gestiona las peticiones HTTP y redirige las respuestas a las vistas JSP. Ejemplo: `servlets.java |
+| com.garaje.model       | Modelo                     | Contiene las clases que representan las entidades de la base de datos. Ejemplo: `Vehiculo.java   |
+| com.garaje.persistence | Persistencia (DAO)         | Encapsula las operaciones CRUD directas sobre la base de datos MySQL. Ejemplo: `VehiculoDAO.java |
+| com.garaje.facade     | Lógica de negocio (Facade) | Aplica las reglas de negocio antes de interactuar con la capa DAO. Ejemplo: `VehiculoFacade.java |
+| com.garaje.controller  | Controladores (Servlets)   | Gestiona las peticiones HTTP y redirige las respuestas a las vistas JSP. Ejemplo: `servlets.java |
 
 
 Base de datos
@@ -112,7 +112,7 @@ Despliegue y ejecución
 5. Ejecutar el proyecto desde el IDE o acceder mediante:
 
    ```
-   http://localhost:8080/TallerGaraje/vehiculos
+   http://localhost:8080/vehicleDAO
    ```
 
 
